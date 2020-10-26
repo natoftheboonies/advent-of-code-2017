@@ -4,7 +4,7 @@ input = """0: 3
 6: 4""".splitlines()
 
 with open('input13','r') as fp:
-	input = fp.readlines()
+	input2 = fp.readlines()
 
 from pprint import pprint
 
@@ -94,9 +94,30 @@ then, we are caught if position % 2*range-2 == 0?
 sample is caught at 0, 6
 6%(2*4-2) = 0
 """
+def take2():
+	layers = {}
+	for x in input:
+		layer, depth = map(int,x.split(':'))
+		layers[layer] = depth
 
+	delay = 0
 
+	while True:
+		caught = False
+		for s in range(delay,10000000):
+			if s-delay in layers:
+				# scanner here, are we caught?
+				depth = layers[s-delay]
+				if s % (2*depth-2) == 0:
+					#print(delay,'caught in layer',s-delay)
+					caught = True
+					break
+		if not caught:
+			print(delay,'was not caught')
+			break
+		delay += 1
 
+take2()
 
 
 # for o in range(15):
