@@ -4,7 +4,7 @@ input = """0: 3
 6: 4""".splitlines()
 
 with open('input13','r') as fp:
-	input2 = fp.readlines()
+	input = fp.readlines()
 
 from pprint import pprint
 
@@ -104,14 +104,13 @@ def take2():
 
 	while True:
 		caught = False
-		for s in range(delay,10000000):
-			if s-delay in layers:
-				# scanner here, are we caught?
-				depth = layers[s-delay]
-				if s % (2*depth-2) == 0:
-					#print(delay,'caught in layer',s-delay)
-					caught = True
-					break
+		for layer in layers:
+			# scanner here, are we caught?
+			depth = layers[layer]
+			if (layer+delay) % (2*depth-2) == 0:
+				#print(delay,'was caught in l',layer,'d',depth)
+				caught = True
+				break
 		if not caught:
 			print(delay,'was not caught')
 			break
