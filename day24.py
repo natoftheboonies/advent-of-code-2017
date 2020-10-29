@@ -8,7 +8,7 @@ sample = """0/2
 9/10""".splitlines()
 
 with open ('input24','r') as fp:
-	Xsample = fp.readlines()
+	sample = fp.readlines()
 
 ports = list()
 
@@ -27,29 +27,22 @@ def findmatch(used,edge):
 			valid_idx.append(idx) 
 	# print('v',valid_idx)
 	maxstrength = 0
-	maxbridge = None
-	valid_bridge = []
 	for t in valid_idx:
 		(x,y) = ports[t]
 		if x+y > maxstrength:
-			valid_bridge = [[(x,y)]]
 			maxstrength = x+y
 		if y==edge:
-			for tail in findmatch(used+[t],x):
-				strength = sum([x+y for (x,y) in [(x,y)]+tail])
-				if strength > maxstrength:
-					maxstrength = strength
-					valid_bridge = [[(x,y)]+tail]
+			strength = x+y+findmatch(used+[t],x)
+			if strength > maxstrength:
+				maxstrength = strength
 		elif x==edge:
-			for tail in findmatch(used+[t],y):
-				strength = sum([x+y for (x,y) in [(x,y)]+tail])
-				if strength > maxstrength:
-					maxstrength = strength				
-					valid_bridge = [[(x,y)]+tail]
+			strength = x+y+findmatch(used+[t],y)
+			if strength > maxstrength:
+				maxstrength = strength				
 		else:
 			print('trouble')
 		# print('t',(x,y))
-	return valid_bridge
+	return maxstrength
 
 
 
@@ -62,11 +55,9 @@ for start in starts:
 		edge = start[1]
 	else:
 		edge = start[0]
-	for tail in findmatch(used,edge):
-		bridge = [start]+tail
-		strength = sum([x+y for (x,y) in bridge])
-		if strength > maxbridge:
-			maxbridge = strength
+	strength = start[0]+start[1]+findmatch(used,edge)
+	if strength > maxbridge:
+		maxbridge = strength
 		
 print('#1',maxbridge)
 	#break
