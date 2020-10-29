@@ -26,30 +26,31 @@ def findmatch(used,edge):
 		if x==edge or y==edge:
 			valid_idx.append(idx) 
 	# print('v',valid_idx)
+	maxstrength = 0
+	maxbridge = None
 	valid_bridge = []
 	for t in valid_idx:
 		(x,y) = ports[t]
-		valid_bridge.append([(x,y)])
+		if x+y > maxstrength:
+			valid_bridge = [[(x,y)]]
+			maxstrength = x+y
 		if y==edge:
 			for tail in findmatch(used+[t],x):
-				valid_bridge.append([(x,y)]+tail)
+				strength = sum([x+y for (x,y) in [(x,y)]+tail])
+				if strength > maxstrength:
+					maxstrength = strength
+					valid_bridge = [[(x,y)]+tail]
 		elif x==edge:
 			for tail in findmatch(used+[t],y):
-				valid_bridge.append([(x,y)]+tail)
+				strength = sum([x+y for (x,y) in [(x,y)]+tail])
+				if strength > maxstrength:
+					maxstrength = strength				
+					valid_bridge = [[(x,y)]+tail]
 		else:
 			print('trouble')
 		# print('t',(x,y))
-
-	if not valid_bridge:
-		return valid_bridge
-	maxstrength = 0
-	maxbridge = None
-	for bridge in valid_bridge:
-		strength = sum([x+y for (x,y) in bridge])
-		if strength > maxstrength:
-			maxbridge = bridge
-			maxstrength = strength
 	return valid_bridge
+
 
 
 starts = [(x,y) for (x,y) in ports if x==0 or y==0]
