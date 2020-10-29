@@ -1,0 +1,32 @@
+set b 65
+set c b			# c = b = 65
+jnz a 2
+jnz 1 5
+mul b 100	  	# b *=  100 		# 6500
+sub b -100000 	# b +=  100000		# b = 106500
+set c b
+sub c -17000	# c = b+17000		# b = 123500
+set f 1			# f = 1
+set d 2			# d = 2
+	set e 2			# e = 2
+		set g d		# g = d*e-b
+		mul g e
+		sub g b
+		jnz g 2		# if g==0:		if b == d*e:
+		set f 0			# f = 0			f = 0
+		sub e -1	# e += 1
+		set g e 	# g = e - b	
+		sub g b
+		jnz g -8    # if g != 0: loop	if b==e: loop
+	sub d -1		# d += 1			d++
+	set g d			# g = d-b		if b==d: loop
+	sub g b
+	jnz g -13		# if g != 0: loop
+jnz f 2			# if f == 0:
+sub h -1		# 	h += 1
+set g b
+sub g c
+jnz g 2
+jnz 1 3
+sub b -17		# b += 17
+jnz 1 -23

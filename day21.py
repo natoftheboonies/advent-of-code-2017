@@ -53,6 +53,8 @@ def split(start):
 # split1      [('#..#', '....',),('....', '#..#')]
 # want to get (('#.','..'),('.#','..')),(('..','#.'),('',''))
 
+import math
+
 def combine(cur3):
 	parts = math.isqrt(len(cur3))	
 	third = len(cur3)//parts
@@ -62,7 +64,6 @@ def combine(cur3):
 		joined.extend(list(''.join(x) for x in zip(*p)))	
 	return joined
 
-import math
 
 def part1():
 	start = '.#./..#/###'.split('/')
